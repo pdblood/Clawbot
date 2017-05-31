@@ -66,6 +66,8 @@ Adafruit_DCMotor *motorArm = AFMS.getMotor(4);
 
 int motorRightSpeed = 0;
 int motorLeftSpeed = 0;
+int motorArmSpeed = 255;
+int motorClawSpeed = 200;
 
 int rightStickY = 0;
 int leftStickY = 0;
@@ -131,8 +133,8 @@ void setup() {
   // Set the speed to start, from 0 (off) to 255 (max speed)
   motorRight->setSpeed(0);
   motorLeft->setSpeed(0);
-  motorArm->setSpeed(255);
-  motorClaw->setSpeed(200);
+  motorArm->setSpeed(motorArmSpeed);
+  motorClaw->setSpeed(motorClawSpeed);
  
   //motorClaw.attach(MOTOR_PWM);
   //vexMotorWrite(motorClaw, 0);  
@@ -257,27 +259,31 @@ void loop() {
     
    if(ps2x.Button(PSB_L1)) // print stick values if either is TRUE
      {
-
+       motorArm->setSpeed(motorArmSpeed);
        motorArm->run(FORWARD);
      }
    else if (ps2x.Button(PSB_L2)){
+     motorArm->setSpeed(motorArmSpeed);
      motorArm->run(BACKWARD);
    }
    else {
-     motorArm->run(RELEASE);
+     motorArm->setSpeed(0);
    }	  
    
    if(ps2x.Button(PSB_R1)) // print stick values if either is TRUE
      {
+
+       motorClaw->setSpeed(motorClawSpeed);
        motorClaw->run(FORWARD);
        //       vexMotorWrite(motorClaw, 255);
      }
    else if (ps2x.Button(PSB_R2)){
+     motorClaw->setSpeed(motorClawSpeed);	
      motorClaw->run(BACKWARD);
      //       vexMotorWrite(motorClaw, -255);
    }
    else {
-     motorClaw->run(RELEASE);
+     motorClaw->setSpeed(0);
      //       vexMotorWrite(motorClaw, 0);		
    }	  
 
